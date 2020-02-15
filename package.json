@@ -1,6 +1,6 @@
 {
   "name": "react-waiter",
-  "version": "0.1.0-alpha.0",
+  "version": "0.0.1",
   "description": "A react promise manager",
   "repository": "https://github.com/billyxs/react-waiter",
   "main": "lib/index.js",

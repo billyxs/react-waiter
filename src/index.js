@@ -1,3 +1,3 @@
-import _useWaiter from './use-waiter';
+import _useWaiter from './useWaiter';
 
-export const useWaiter = function() {};
+export const useWaiter = _useWaiter;
