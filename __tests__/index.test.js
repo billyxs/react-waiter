@@ -47,13 +47,14 @@ describe('useWaiter', () => {
     })
 
     it('should set response', async () => {
+      const MOCK_RESPONSE = { success: true }
       const { getWrapper, getProps } = testHook(
-          () => useWaiter(() => Promise.resolve()),
+          () => useWaiter(() => Promise.resolve(MOCK_RESPONSE)),
           true
       )
       await new Promise((resolve) => setTimeout(resolve, 100))
       getWrapper().update()
-      expect(getProps().response.success).toBe(true);
+      expect(getProps().response).toBe(MOCK_RESPONSE);
     })
   })
 
