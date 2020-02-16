@@ -25,9 +25,22 @@ describe('useWaiter', () => {
     )
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(null);
+
+    expect(result.current.isPending).toBe(true);
+    expect(result.current.isResolved).toBe(false);
+    expect(result.current.isRejected).toBe(false);
+    expect(result.current.isCompleted).toBe(false);
+
+    expect(result.current.lastModified).toBeGreaterThan(0);
+
     await waitForNextUpdate()
     expect(result.current.response).toBe(MOCK_RESPONSE);
     expect(result.current.error).toBe(null);
+
+    expect(result.current.isPending).toBe(false);
+    expect(result.current.isResolved).toBe(true);
+    expect(result.current.isRejected).toBe(false);
+    expect(result.current.isCompleted).toBe(true);
   })
 
   it('should handle error state', async () => {
