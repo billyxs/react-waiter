@@ -23,14 +23,14 @@
     "url": "https://github.com/billyxs"
   },
   "bugs": "https://github.com/billyxs/react-waiter/issues/",
-  "dependencies": {
-    "reselect": "*"
-  },
   "peerDependencies": {
     "prop-types": "*",
     "react": "*"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.1.1",
+    "@testing-library/react": "^9.4.0",
+    "@testing-library/react-hooks": "^3.2.1",
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^23.6.0",
@@ -50,6 +50,7 @@
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-hooks": "^2.3.0",
     "eslint-plugin-standard": "^4.0.1",
     "husky": "^4.2.1",
     "jest": "^23.6.0",
@@ -59,7 +60,7 @@
     "prop-types": "*",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-test-renderer": "^16.2.0",
+    "react-test-renderer": "^16.12.0",
     "rimraf": "^2.6.1"
   },
   "scripts": {
