@@ -5,19 +5,30 @@ import { useWaiter } from '../src';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-export default function testHook(runHook, flushEffects = true) {
+export default function testHook(
+  runHook,
+  flushEffects = true
+) {
   function HookWrapper() {
-    const output = runHook();
+    const { response, error } = runHook();
 
     return (
-      <span output={output} />
+      <span
+        response={response}
+        error={error}
+        />
     );
   }
 
   const wrapperFunc = flushEffects ? mount : shallow;
   const wrapper = wrapperFunc(<HookWrapper />);
 
-  return wrapper.find('span').props().output;
+  return {
+    getWrapper: () => wrapper,
+    getProps: () => {
+      return wrapper.find('span').props()
+    }
+  }
 }
 
 describe('useWaiter', () => {
@@ -25,9 +36,45 @@ describe('useWaiter', () => {
     expect(typeof useWaiter).toBe('function');
   });
 
-  it('should', () => {
-    const value = testHook(() => useWaiter(), false)
-    expect(value.response).toBe(undefined);
+  describe('response', () => {
+    it('should initialize as null', () => {
+      const { getProps } = testHook(
+          () => useWaiter(() => Promise.resolve()),
+          false
+      )
+      expect(getProps().response).toBe(null);
+      expect(getProps().error).toBe(null);
+    })
 
+    it('should set response', async () => {
+      const { getWrapper, getProps } = testHook(
+          () => useWaiter(() => Promise.resolve()),
+          true
+      )
+      await new Promise((resolve) => setTimeout(resolve, 100))
+      getWrapper().update()
+      expect(getProps().response.success).toBe(true);
+    })
+  })
+
+  describe('error', () => {
+    it('should initialize as null', () => {
+      const { getProps } = testHook(
+          () => useWaiter(() => Promise.resolve()),
+          false
+      )
+      expect(getProps().response).toBe(null);
+    })
+
+    it('should set error', async () => {
+      const MOCK_ERROR = { message: 'error' }
+      const { getWrapper, getProps } = testHook(
+          () => useWaiter(() => Promise.reject(MOCK_ERROR)),
+          true
+      )
+      await new Promise((resolve) => setTimeout(resolve, 100))
+      getWrapper().update()
+      expect(getProps().error).toBe(MOCK_ERROR);
+    })
   })
 });
