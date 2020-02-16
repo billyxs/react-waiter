@@ -68,5 +68,6 @@ export default function useWaiter(requestCreator) {
     lastModified,
     startTime,
     endTime,
+    elapsedTime,
   };
 }
