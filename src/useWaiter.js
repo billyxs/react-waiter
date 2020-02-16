@@ -9,7 +9,7 @@ export default function useWaiter(requestCreator) {
     async function requestRunner() {
       try {
         const data = await requestCreator()
-        setResponse({ success: true })
+        setResponse(data)
       } catch(e) {
         setError(e)
       }
