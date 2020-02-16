@@ -1,9 +1,8 @@
 # React Waiter
 
-[![NPM](https://img.shields.io/npm/v/react-waiter)](https://npmjs.org/package/react-waiter)
+[![NPM](https://img.shields.io/npm/v/redux-waiter)](https://npmjs.org/package/redux-waiter)
 [![Build Status](https://travis-ci.org/billyxs/react-waiter.svg?branch=master)](https://travis-ci.org/billyxs/react-waiter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-![version](https://img.shields.io/badge/version-0.0.1.alpha.0-blue)
 
 ## Installation
 
