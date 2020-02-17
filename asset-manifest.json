@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/react-waiter/static/css/main.5ecd60fb.chunk.css",
+    "main.js": "/react-waiter/static/js/main.219e2200.chunk.js",
+    "main.js.map": "/react-waiter/static/js/main.219e2200.chunk.js.map",
+    "runtime-main.js": "/react-waiter/static/js/runtime-main.c829a1a7.js",
+    "runtime-main.js.map": "/react-waiter/static/js/runtime-main.c829a1a7.js.map",
+    "static/js/2.4ebbb249.chunk.js": "/react-waiter/static/js/2.4ebbb249.chunk.js",
+    "static/js/2.4ebbb249.chunk.js.map": "/react-waiter/static/js/2.4ebbb249.chunk.js.map",
+    "index.html": "/react-waiter/index.html",
+    "precache-manifest.22573f8a63efd6e82c6c492361b65e63.js": "/react-waiter/precache-manifest.22573f8a63efd6e82c6c492361b65e63.js",
+    "service-worker.js": "/react-waiter/service-worker.js",
+    "static/css/main.5ecd60fb.chunk.css.map": "/react-waiter/static/css/main.5ecd60fb.chunk.css.map",
+    "static/js/2.4ebbb249.chunk.js.LICENSE.txt": "/react-waiter/static/js/2.4ebbb249.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c829a1a7.js",
+    "static/js/2.4ebbb249.chunk.js",
+    "static/css/main.5ecd60fb.chunk.css",
+    "static/js/main.219e2200.chunk.js"
+  ]
+}
