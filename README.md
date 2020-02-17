@@ -14,10 +14,16 @@
 import React from 'react';
 import { useWaiter } from 'react-waiter';
 
+function requestCreator() {
+  return Promise.resolve({ name: 'react-waiter' })
+}
+
 function Component() {
-  const { response, isPending, isResolved } = useWaiter(
-    () => Promise.resolve({ name: 'react-waiter' })
-  );
+  const { 
+    response, 
+    isPending, 
+    isResolved 
+  } = useWaiter(requestCreator);
 
   if (isPending) {
     return <span>working...</span>;
@@ -70,7 +76,7 @@ elapsedTime: null,
 lastModified: null,
 ```
 
-### 
+### Hook properties
 
 ```javascript
 const {
