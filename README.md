@@ -15,8 +15,8 @@ import React from 'react';
 import { useWaiter } from 'react-waiter';
 
 function Component() {
-  const { response, isPending, isResolved } = useWaiter(() =>
-    Promise.resolve({ name: 'react-waiter' })
+  const { response, isPending, isResolved } = useWaiter(
+    () => Promise.resolve({ name: 'react-waiter' })
   );
 
   if (isPending) {
@@ -70,14 +70,14 @@ elapsedTime: null,
 lastModified: null,
 ```
 
-###
+### 
 
 ```javascript
 const {
   // initialized promise
   request,
 
-  // resolved data
+  // result data
   response,
   error,
 
