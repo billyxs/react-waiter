@@ -63,7 +63,7 @@ startTime: null,
 // unix timestamp in milliseconds when the request is completes
 endTime: null,
 
-// unix timestamp in milliseconds of the request processing time
+// duration in milliseconds for the request to complete 
 elapsedTime: null,
 
 // unix timestamp in milliseconds of the last update to any property
