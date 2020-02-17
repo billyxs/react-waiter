@@ -1,15 +1,22 @@
 #!/bin/bash
 
-echo "What release for version is this?"
-read VERSION
-echo $VERSION
 
-if [ -z "$VERSION" ]; then
-    echo "Version not required, exiting."
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+VERSION=$(echo $BRANCH  | cut -d/ -f 2)
+
+echo "Branch: $BRANCH\n"
+echo "Create release for version $VERSION? y/n"
+read isyes 
+
+if [ $isyes != "yes" ] && [ $isyes != "y" ]; then
+    echo "Canceling release for $VERSION."
+    echo "Maybe next time."
     exit
 fi
 
-npm version 
+npm version $VERSION
 npm publish
 cd pages
 npm run deploy
+
+git push origin $BRANCH
