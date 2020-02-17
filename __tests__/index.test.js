@@ -24,6 +24,9 @@ describe('useWaiter', () => {
     expect(result.current.isCompleted).toBe(false);
 
     expect(result.current.lastModified).toBeGreaterThan(0);
+    expect(result.current.startTime).toBeGreaterThan(0);
+    expect(result.current.endTime).toBeNull();
+    expect(result.current.elapsedTime).toBeNull();
 
     await waitForNextUpdate();
     expect(result.current.response).toBe(MOCK_RESPONSE);
@@ -33,6 +36,11 @@ describe('useWaiter', () => {
     expect(result.current.isResolved).toBe(true);
     expect(result.current.isRejected).toBe(false);
     expect(result.current.isCompleted).toBe(true);
+
+    expect(result.current.lastModified).toBeGreaterThan(0);
+    expect(result.current.startTime).toBeGreaterThan(0);
+    expect(result.current.endTime).toBeGreaterThan(0);
+    expect(result.current.elapsedTime).toBeGreaterThan(0);
   });
 
   it('should handle error state', async () => {
@@ -42,8 +50,29 @@ describe('useWaiter', () => {
     );
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(null);
+
+    expect(result.current.isPending).toBe(true);
+    expect(result.current.isResolved).toBe(false);
+    expect(result.current.isRejected).toBe(false);
+    expect(result.current.isCompleted).toBe(false);
+
+    expect(result.current.lastModified).toBeGreaterThan(0);
+    expect(result.current.startTime).toBeGreaterThan(0);
+    expect(result.current.endTime).toBeNull();
+    expect(result.current.elapsedTime).toBeNull();
+
     await waitForNextUpdate();
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(MOCK_ERROR);
+
+    expect(result.current.isPending).toBe(false);
+    expect(result.current.isResolved).toBe(false);
+    expect(result.current.isRejected).toBe(true);
+    expect(result.current.isCompleted).toBe(true);
+
+    expect(result.current.lastModified).toBeGreaterThan(0);
+    expect(result.current.startTime).toBeGreaterThan(0);
+    expect(result.current.endTime).toBeGreaterThan(0);
+    expect(result.current.elapsedTime).toBeGreaterThan(0);
   });
 });
