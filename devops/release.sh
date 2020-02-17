@@ -18,5 +18,6 @@ npm version $VERSION
 npm publish
 cd pages
 npm run deploy
+cd ../
 
 git push origin $BRANCH
