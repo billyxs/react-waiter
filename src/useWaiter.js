@@ -11,7 +11,6 @@ export default function useWaiter(requestCreator) {
   // waiter timestamps
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
-  const [elapsedTime, setElapsedTime] = useState(null);
   const [lastModified, setLastModified] = useState(null);
 
   // waiter
@@ -49,7 +48,6 @@ export default function useWaiter(requestCreator) {
 
       setEndTime(getTime());
       setLastModified(getTime());
-      setElapsedTime(endTime - startTime);
     }
 
     requestRunner();
@@ -68,6 +66,6 @@ export default function useWaiter(requestCreator) {
     lastModified,
     startTime,
     endTime,
-    elapsedTime,
+    elapsedTime: endTime ? endTime - startTime : null,
   };
 }
