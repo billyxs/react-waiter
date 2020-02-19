@@ -59,13 +59,13 @@ export default function useWaiter(requestCreator) {
     setLastModified(getTime());
   }
 
-  const callWaiter = useCallback(() => {
-    requestRunner();
-  });
+  const callWaiter = useCallback((params) => {
+    requestRunner(params);
+  }, []);
 
   useEffect(() => {
     callWaiter();
-  }, []);
+  }, [callWaiter]);
 
   return {
     callWaiter,
