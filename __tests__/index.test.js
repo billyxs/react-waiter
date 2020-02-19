@@ -15,6 +15,7 @@ describe('useWaiter', () => {
     const { result, waitForNextUpdate } = createHookTest((resolve) =>
       setTimeout(() => resolve(MOCK_RESPONSE), 500)
     );
+    expect(result.current.id).toBe(1);
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(null);
 
@@ -48,6 +49,7 @@ describe('useWaiter', () => {
     const { result, waitForNextUpdate } = createHookTest((resolve, reject) =>
       setTimeout(() => reject(MOCK_ERROR), 500)
     );
+    expect(result.current.id).toBe(1);
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(null);
 
