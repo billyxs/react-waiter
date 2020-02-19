@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import getTime from './helpers/getTime';
 
 export default function useWaiter(requestCreator) {
@@ -14,12 +14,16 @@ export default function useWaiter(requestCreator) {
   const [lastModified, setLastModified] = useState(null);
 
   // waiter
+  const id = useRef(null);
   const [request, setRequest] = useState(null);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     async function requestRunner() {
+      const waiterId = id.current + 1;
+      id.current = waiterId;
+
       try {
         const request = requestCreator();
         setRequest(request);
@@ -29,6 +33,9 @@ export default function useWaiter(requestCreator) {
         setPending(true);
 
         const data = await request;
+        if (waiterId !== id.current) {
+          return;
+        }
         setResponse(data);
         setError(null);
 
@@ -37,6 +44,9 @@ export default function useWaiter(requestCreator) {
         setRejected(false);
         setCompleted(true);
       } catch (e) {
+        if (waiterId !== id.current) {
+          return;
+        }
         setResponse(null);
         setError(e);
 
@@ -54,6 +64,7 @@ export default function useWaiter(requestCreator) {
   }, []);
 
   return {
+    id: id.current,
     request,
     response,
     error,
