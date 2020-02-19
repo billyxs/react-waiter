@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import getTime from './helpers/getTime';
 
 export default function useWaiter(requestCreator) {
@@ -14,46 +14,63 @@ export default function useWaiter(requestCreator) {
   const [lastModified, setLastModified] = useState(null);
 
   // waiter
+  const id = useRef(null);
   const [request, setRequest] = useState(null);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function requestRunner() {
-      try {
-        const request = requestCreator();
-        setRequest(request);
-        setStartTime(getTime());
-        setLastModified(getTime());
+  async function requestRunner() {
+    const waiterId = id.current + 1;
+    id.current = waiterId;
 
-        setPending(true);
-
-        const data = await request;
-        setResponse(data);
-        setError(null);
-
-        setPending(false);
-        setResolved(true);
-        setRejected(false);
-        setCompleted(true);
-      } catch (e) {
-        setResponse(null);
-        setError(e);
-
-        setPending(false);
-        setResolved(false);
-        setRejected(true);
-        setCompleted(true);
-      }
-
-      setEndTime(getTime());
+    try {
+      const request = requestCreator();
+      setRequest(request);
+      setStartTime(getTime());
       setLastModified(getTime());
+
+      setPending(true);
+
+      const data = await request;
+      if (waiterId !== id.current) {
+        return;
+      }
+      setResponse(data);
+      setError(null);
+
+      setPending(false);
+      setResolved(true);
+      setRejected(false);
+      setCompleted(true);
+    } catch (e) {
+      if (waiterId !== id.current) {
+        return;
+      }
+      setResponse(null);
+      setError(e);
+
+      setPending(false);
+      setResolved(false);
+      setRejected(true);
+      setCompleted(true);
     }
 
+    setEndTime(getTime());
+    setLastModified(getTime());
+  }
+
+  const callWaiter = useCallback(() => {
     requestRunner();
+  });
+
+  useEffect(() => {
+    callWaiter();
   }, []);
 
   return {
+    callWaiter,
+
+    id: id.current,
     request,
     response,
     error,
