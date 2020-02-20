@@ -2,6 +2,9 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import getTime from './helpers/getTime';
 
 export default function useWaiter(requestCreator) {
+  // mutables
+  const id = useRef(0);
+
   // waiter lifecyle
   const [isPending, setPending] = useState(false);
   const [isResolved, setResolved] = useState(false);
@@ -13,8 +16,7 @@ export default function useWaiter(requestCreator) {
   const [endTime, setEndTime] = useState(null);
   const [lastModified, setLastModified] = useState(null);
 
-  // waiter
-  const id = useRef(null);
+  // waiter request data
   const [request, setRequest] = useState(null);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
@@ -25,36 +27,41 @@ export default function useWaiter(requestCreator) {
 
     try {
       const request = requestCreator();
+      // waiter request init
       setRequest(request);
-      setStartTime(getTime());
-      setLastModified(getTime());
+      setError(null);
 
+      // waiter lifecycle init
       setPending(true);
+      setResolved(false);
+      setRejected(false);
+      setCompleted(false);
+
+      // waiter timestamps init
+      setStartTime(getTime());
+      setEndTime(null);
+      setLastModified(getTime());
 
       const data = await request;
       if (waiterId !== id.current) {
         return;
       }
+      // waiter success changes
       setResponse(data);
-      setError(null);
-
-      setPending(false);
       setResolved(true);
-      setRejected(false);
-      setCompleted(true);
     } catch (e) {
       if (waiterId !== id.current) {
         return;
       }
+      // request error changes
       setResponse(null);
       setError(e);
-
-      setPending(false);
-      setResolved(false);
       setRejected(true);
-      setCompleted(true);
     }
 
+    // waiter completed changes
+    setPending(false);
+    setCompleted(true);
     setEndTime(getTime());
     setLastModified(getTime());
   }

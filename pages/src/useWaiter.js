@@ -64,7 +64,7 @@ export function useWaiter(requestCreator, requestParams) {
       setRejected(true);
     }
 
-    // completed changes
+    // waiter completed changes
     setPending(false);
     setCompleted(true);
     setEndTime(getTime());
