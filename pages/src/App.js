@@ -102,6 +102,8 @@ function TestWaiter() {
         return apiRequest(params)
       }
 
+      const myWaiter = usewaiter( myrequest, { param1: "hello" })
+
       const {
         id,
         params,
@@ -120,10 +122,7 @@ function TestWaiter() {
         endTime,
         elapsedTime,
         lastModified
-      } = useWaiter(
-        myRequest,
-        { param1: "hello" }
-      ))`}
+      } = myWaiter`}
     />
       </div>
 
@@ -135,15 +134,12 @@ function TestWaiter() {
         verticalAlign: 'top',
       }}>
 
+        Button onClick with initiate callWaiter({JSON.stringify({preWaiterId: id})})
+        <br />
+        <br />
         <Button onClick={() => callWaiter({ prevWaiterId: id })} >
           Run with new params
         </Button>
-        <br />
-        <br />
-        New params will be:
-        <br />
-        <br />
-        {JSON.stringify({ prevWaiterId: id })}
         <br />
         <br />
 
