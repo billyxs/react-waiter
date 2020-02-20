@@ -3,7 +3,11 @@ function getTime() {
   return new Date().getTime()
 }
 
-export function useWaiter(requestCreator) {
+export function useWaiter(requestCreator, requestParams) {
+  // mutables
+  const id = useRef(null);
+  const params = useRef(null);
+
   // waiter lifecyle
   const [isPending, setPending] = useState(false);
   const [isResolved, setResolved] = useState(false);
@@ -15,85 +19,71 @@ export function useWaiter(requestCreator) {
   const [endTime, setEndTime] = useState(null);
   const [lastModified, setLastModified] = useState(null);
 
-  // waiter
-  const id = useRef(0);
+  // waiter request data
   const [request, setRequest] = useState(null);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
 
-  async function requestRunner() {
-    const currentId = id.current + 1
-    id.current = currentId
+  async function requestRunner(runnerParams) {
+    params.current = runnerParams
+
+    const waiterId = id.current + 1;
+    id.current = waiterId;
+
     try {
-      // reset request and data
-      setRequest(null);
+      const request = requestCreator(runnerParams);
+      // waiter request init
+      setRequest(request);
       setError(null);
 
-      // timestamps
-      setStartTime(getTime());
-      setEndTime(null);
-
-      // reset lifecycle
+      // waiter lifecycle init
       setPending(true);
       setResolved(false);
       setRejected(false);
       setCompleted(false);
 
-      // init request
-      const request = requestCreator();
-      if (id.current !== currentId) {
-        return
-      }
-
-      setRequest(request);
+      // waiter timestamps init
+      setStartTime(getTime());
+      setEndTime(null);
       setLastModified(getTime());
 
-      // handle resolved request
       const data = await request;
-      setResponse(data);
-      setError(null);
-
-      setPending(false);
-      setResolved(true);
-      setRejected(false);
-      setCompleted(true);
-    } catch (e) {
-      if (id.current !== currentId) {
-        return
+      if (waiterId !== id.current) {
+        return;
       }
-      // handle rejected request
+      // waiter success changes
+      setResponse(data);
+      setResolved(true);
+    } catch (e) {
+      if (waiterId !== id.current) {
+        return;
+      }
+      // request error changes
       setResponse(null);
       setError(e);
-
-      setPending(false);
-      setResolved(false);
       setRejected(true);
-      setCompleted(true);
     }
 
-    // ending timestamps
+    // completed changes
+    setPending(false);
+    setCompleted(true);
     setEndTime(getTime());
     setLastModified(getTime());
-    console.log('endTime = ', endTime)
-    console.log('duration', endTime - startTime)
-
   }
 
-  const callWaiter = useCallback(
-    (params) => {
-      requestRunner(params);
-    }, []
-  )
+  const callWaiter = useCallback((callbackParams) => {
+    requestRunner(callbackParams);
+  }, []);
 
   useEffect(() => {
-    callWaiter();
-  }, [callWaiter])
-
+    callWaiter(requestParams);
+  }, [callWaiter]);
 
   return {
     callWaiter,
+    params: params.current,
 
-    id,
+    id: id.current,
     request,
     response,
     error,
