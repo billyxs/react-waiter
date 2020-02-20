@@ -6,22 +6,22 @@ export function useWaiter(requestCreator, requestParams) {
   // mutables
   const id = useRef(null);
   const params = useRef(null);
+  const response = useRef(null);
+
+  const [request, setRequest] = useState(null);
+  const [error, setError] = useState(null);
 
   // waiter lifecyle
   const [isPending, setPending] = useState(false);
   const [isResolved, setResolved] = useState(false);
   const [isRejected, setRejected] = useState(false);
   const [isCompleted, setCompleted] = useState(false);
+  const [isRefreshing, setRefreshing] = useState(false);
 
   // waiter timestamps
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [lastModified, setLastModified] = useState(null);
-
-  // waiter request data
-  const [request, setRequest] = useState(null);
-  const [response, setResponse] = useState(null);
-  const [error, setError] = useState(null);
 
   async function requestRunner(runnerParams) {
     params.current = runnerParams;
@@ -30,6 +30,10 @@ export function useWaiter(requestCreator, requestParams) {
 
     try {
       const request = requestCreator();
+      // if we have a response already, we're refreshing
+      const refresh = !!response.current;
+      setRefreshing(refresh);
+
       // waiter request init
       setRequest(request);
       setError(null);
@@ -50,14 +54,14 @@ export function useWaiter(requestCreator, requestParams) {
         return;
       }
       // waiter success changes
-      setResponse(data);
+      response.current = data;
       setResolved(true);
     } catch (e) {
       if (waiterId !== id.current) {
         return;
       }
       // request error changes
-      setResponse(null);
+      response.current = null;
       setError(e);
       setRejected(true);
     }
@@ -65,6 +69,7 @@ export function useWaiter(requestCreator, requestParams) {
     // waiter completed changes
     setPending(false);
     setCompleted(true);
+    setRefreshing(false);
     setEndTime(getTime());
     setLastModified(getTime());
   }
@@ -83,13 +88,14 @@ export function useWaiter(requestCreator, requestParams) {
 
     id: id.current,
     request,
-    response,
+    response: response.current,
     error,
 
     isPending,
     isResolved,
     isRejected,
     isCompleted,
+    isRefreshing,
 
     lastModified,
     startTime,
