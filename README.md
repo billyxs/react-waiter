@@ -69,6 +69,9 @@ isRejected: false,
 // true when the request has rejected or resolved
 isCompleted: false,
 
+// true if the request completed previously and is being called again
+isRefreshing: false,
+
 // unix timestamp in milliseconds when the request is initialzed
 startTime: null,
 
@@ -86,15 +89,10 @@ lastModified: null,
 
 ```javascript
 const {
+  // waiter data
   id,
-
-  // initialized promise
   request,
-
-  // params used for request
   params, 
-
-  // result data
   response,
   error,
 
@@ -103,6 +101,7 @@ const {
   isResolved,
   isRejected,
   isCompleted,
+  isRefreshing,
 
   // timestamps
   startTime,
