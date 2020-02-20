@@ -45,22 +45,16 @@ const WaiterDiv = styled.div`
 `
 
 function testRequest() {
-  console.log('init testRequest = ')
   return new Promise(
     (resolve, reject) => {
-      console.log('init promise = ')
       setTimeout(() => {
-        console.log('on timeout = ')
         const num = Math.floor(Math.random() * 10)
-        console.log('num = ', num)
 
         if (num % 2 === 1) {
-          console.log('on reject = ')
           reject({ message: 'Sorry, rejected'})
           return
         }
 
-        console.log('on resolve = ')
         resolve({ success: true })
       }, 5000)
     }
