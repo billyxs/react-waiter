@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import getTime from './helpers/getTime';
 
-export default function useWaiter(requestCreator, requestParams) {
+export function useWaiter(requestCreator, requestParams) {
+  // waiter request data
   // mutables
   const id = useRef(null);
   const params = useRef(null);
