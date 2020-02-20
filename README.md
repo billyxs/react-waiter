@@ -42,6 +42,12 @@ A react hook for handling your async requests.
 ### defaults
 
 ```
+// The request ID of the waiter. This will increment with each call.
+id: null,
+
+// The params sent to the requestCreator based on the last request
+params: undefined,
+
 // the promise returned from the requestCreator
 request: null,
 
@@ -80,8 +86,13 @@ lastModified: null,
 
 ```javascript
 const {
+  id,
+
   // initialized promise
   request,
+
+  // params used for request
+  params, 
 
   // result data
   response,
