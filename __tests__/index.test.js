@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-hooks';
 import { useWaiter } from '../src';
 
 function createHookTest(promiseFunc, params) {
@@ -31,6 +31,7 @@ describe('useWaiter', () => {
     expect(result.current.isResolved).toBe(false);
     expect(result.current.isRejected).toBe(false);
     expect(result.current.isCompleted).toBe(false);
+    expect(result.current.isRefreshing).toBe(false);
 
     expect(result.current.lastModified).toBeGreaterThan(0);
     expect(result.current.startTime).toBeGreaterThan(0);
@@ -49,6 +50,7 @@ describe('useWaiter', () => {
     expect(result.current.isResolved).toBe(true);
     expect(result.current.isRejected).toBe(false);
     expect(result.current.isCompleted).toBe(true);
+    expect(result.current.isRefreshing).toBe(false);
 
     expect(result.current.lastModified).toBeGreaterThan(0);
     expect(result.current.startTime).toBeGreaterThan(0);
@@ -56,6 +58,61 @@ describe('useWaiter', () => {
     expect(result.current.elapsedTime).toBeGreaterThan(0);
   });
 
+  it('should handle refresh state', async () => {
+    const TEST_PARAMS = { test: true };
+    const MOCK_RESPONSE = { success: true };
+    const { result, waitForNextUpdate } = createHookTest(
+      (resolve) => setTimeout(() => resolve(MOCK_RESPONSE), 500),
+      TEST_PARAMS
+    );
+    // normal cycle
+    expect(result.current.id).toBe(1);
+    expect(result.current.response).toBe(null);
+    expect(result.current.isRefreshing).toBe(false);
+
+    await waitForNextUpdate();
+
+    expect(result.current.id).toBe(1);
+    expect(result.current.response).toBe(MOCK_RESPONSE);
+    expect(result.current.isRefreshing).toBe(false);
+
+    // Start refresh cycle
+    act(() => result.current.callWaiter());
+
+    expect(result.current.id).toBe(2);
+    expect(result.current.params).toBeUndefined();
+    expect(result.current.response).toBe(MOCK_RESPONSE);
+    expect(result.current.error).toBe(null);
+
+    expect(result.current.isPending).toBe(true);
+    expect(result.current.isResolved).toBe(false);
+    expect(result.current.isRejected).toBe(false);
+    expect(result.current.isCompleted).toBe(false);
+    expect(result.current.isRefreshing).toBe(true);
+
+    expect(result.current.lastModified).toBeGreaterThan(0);
+    expect(result.current.startTime).toBeGreaterThan(0);
+    expect(result.current.endTime).toBe(null);
+    expect(result.current.elapsedTime).toBe(null);
+
+    await waitForNextUpdate();
+
+    expect(result.current.id).toBe(2);
+    expect(result.current.params).toBeUndefined();
+    expect(result.current.response).toBe(MOCK_RESPONSE);
+    expect(result.current.error).toBe(null);
+
+    expect(result.current.isPending).toBe(false);
+    expect(result.current.isResolved).toBe(true);
+    expect(result.current.isRejected).toBe(false);
+    expect(result.current.isCompleted).toBe(true);
+    expect(result.current.isRefreshing).toBe(false);
+
+    expect(result.current.lastModified).toBeGreaterThan(0);
+    expect(result.current.startTime).toBeGreaterThan(0);
+    expect(result.current.endTime).toBeGreaterThan(0);
+    expect(result.current.elapsedTime).toBeGreaterThan(0);
+  });
   it('should handle error state', async () => {
     const MOCK_ERROR = { message: 'error' };
     const { result, waitForNextUpdate } = createHookTest((resolve, reject) =>
@@ -71,6 +128,7 @@ describe('useWaiter', () => {
     expect(result.current.isResolved).toBe(false);
     expect(result.current.isRejected).toBe(false);
     expect(result.current.isCompleted).toBe(false);
+    expect(result.current.isRefreshing).toBe(false);
 
     expect(result.current.lastModified).toBeGreaterThan(0);
     expect(result.current.startTime).toBeGreaterThan(0);
@@ -88,6 +146,7 @@ describe('useWaiter', () => {
     expect(result.current.isResolved).toBe(false);
     expect(result.current.isRejected).toBe(true);
     expect(result.current.isCompleted).toBe(true);
+    expect(result.current.isRefreshing).toBe(false);
 
     expect(result.current.lastModified).toBeGreaterThan(0);
     expect(result.current.startTime).toBeGreaterThan(0);

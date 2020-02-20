@@ -81,6 +81,7 @@ function TestWaiter() {
     isResolved,
     isRejected,
     isCompleted,
+    isRefreshing,
 
     startTime,
     endTime,
@@ -119,6 +120,7 @@ function TestWaiter() {
         isResolved,
         isRejected,
         isCompleted,
+        isRefreshing,
 
         startTime,
         endTime,
@@ -186,6 +188,7 @@ function TestWaiter() {
         <div>isResolved: {isResolved.toString()}</div>
         <div>isRejected: {isRejected.toString()}</div>
         <div>isCompleted: {isCompleted.toString()}</div>
+        <div>isRefreshing: {isRefreshing.toString()}</div>
         <br />
         <div>startTime: {startTime}</div>
         <div>endTime: {endTime}</div>
