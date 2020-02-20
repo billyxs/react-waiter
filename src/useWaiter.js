@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import getTime from './helpers/getTime';
 
-export default function useWaiter(requestCreator) {
+export default function useWaiter(requestCreator, requestParams) {
   // mutables
-  const id = useRef(0);
+  const id = useRef(null);
+  const params = useRef(null);
 
   // waiter lifecyle
   const [isPending, setPending] = useState(false);
@@ -21,7 +22,8 @@ export default function useWaiter(requestCreator) {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
 
-  async function requestRunner() {
+  async function requestRunner(runnerParams) {
+    params.current = runnerParams;
     const waiterId = id.current + 1;
     id.current = waiterId;
 
@@ -66,16 +68,17 @@ export default function useWaiter(requestCreator) {
     setLastModified(getTime());
   }
 
-  const callWaiter = useCallback((params) => {
-    requestRunner(params);
+  const callWaiter = useCallback((callbackParams) => {
+    requestRunner(callbackParams);
   }, []);
 
   useEffect(() => {
-    callWaiter();
+    callWaiter(requestParams);
   }, [callWaiter]);
 
   return {
     callWaiter,
+    params: params.current,
 
     id: id.current,
     request,
