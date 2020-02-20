@@ -25,8 +25,10 @@ export function useWaiter(requestCreator, requestParams) {
   const [error, setError] = useState(null);
 
   async function requestRunner(runnerParams) {
+    // update the request params used in request
     params.current = runnerParams
 
+    // increment id on each call
     const waiterId = id.current + 1;
     id.current = waiterId;
 
