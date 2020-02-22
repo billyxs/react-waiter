@@ -92,7 +92,7 @@ export function useWaiter(requestCreator, requestParams) {
   }, []);
 
   const clearWaiter = useCallback(() => {
-    id.current = id.current + 1
+    id.current = null
     isCanceled.current =false
     response.current = null
     params.current = null

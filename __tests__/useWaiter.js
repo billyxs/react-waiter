@@ -188,7 +188,7 @@ describe('useWaiter', () => {
 
     act(() => result.current.clearWaiter());
 
-    expect(result.current.id).toBe(2);
+    expect(result.current.id).toBe(null);
     expect(result.current.params).toBe(null);
 
     expect(result.current.request).toBe(null);
