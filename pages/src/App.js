@@ -132,21 +132,23 @@ function TestWaiter() {
         <br />
         <h3>Button code</h3>
         <SyntaxHighlighter language="javascript" style={monokai}>
-{`<Button onClick={() =>
-  callWaiter({
-      prevWaiterId: id
-  })}
-  >
-  Call Waiter with params
-</Button>
+{`
+  <Button onClick={() =>
+    callWaiter({
+        prevWaiterId: id
+    })}
+    >
+    Call Waiter with params
+  </Button>
 
-<Button onClick={cancelWaiter}>
-  Cancel Waiter
-</Button>
+  <Button onClick={cancelWaiter}>
+    Cancel Waiter
+  </Button>
 
-<Button onClick={clearWaiter}>
-  Clear Waiter
-</Button>
+  <Button onClick={clearWaiter}>
+    Clear Waiter
+  </Button>
+
 `}
         </SyntaxHighlighter>
       </div>
@@ -201,38 +203,61 @@ function TestWaiter() {
       <div>
             <h2>useWaiter()</h2>
       <div>
-   <ReactMarkdown
-    source={`
-      function myRequest(params) {
-        return apiRequest(params)
-      }
+        <SyntaxHighlighter language="javascript" style={monokai}>
+{`
+  function requestCreator(params) {
+    return getItem(params)
+  }
 
-      const myWaiter = usewaiter( myrequest, { param1: "hello" })
+  function MyComponent() {
+    const myWaiter = usewaiter( requestCreator, { id: 1 })
 
-      const {
-        callWaiter,
-        cancelWaiter,
-        clearWaiter,
+    const {
+      callWaiter,
+      cancelWaiter,
+      clearWaiter,
 
-        id,
-        params,
-        request,
-        response,
-        error,
+      id,
+      params,
+      request,
+      response,
+      error,
 
-        isPending,
-        isResolved,
-        isRejected,
-        isCompleted,
-        isRefreshing,
-        isCanceled,
+      isPending,
+      isResolved,
+      isRejected,
+      isCompleted,
+      isRefreshing,
+      isCanceled,
 
-        startTime,
-        endTime,
-        elapsedTime,
-        lastModified
-      } = myWaiter`}
-    />
+      startTime,
+      endTime,
+      elapsedTime,
+      lastModified
+    } = myWaiter
+
+    return (
+      <div>
+        <button onClick={cancelWaiter}>Cancel request</button>
+        <button onClick={cancelWaiter}>Clear</button>
+        <button onClick={() => callWaiter({ id: params.id + 1 })}>Get next item</button>
+
+        {isPending && '...loading'}
+        {isResolved && response.item.id}
+        {isRejected && error.message}
+        {isCompleted && 'All done!'}
+        {isRefreshing && '...getting latest'}
+        {isCanceled && 'Sorry, interrupted!'}
+
+        {startTime && 'Started at ' + startTime }
+        {endTime && 'Ended at' + endTime }
+        {elapsedTime && 'That took' + elapsedTime + 'milliseconds' }
+        {lastModified && 'Last change ' + lastModified }
+      </div>
+    )
+  }
+  `}
+  </SyntaxHighlighter>
       </div>
 
       </div>
