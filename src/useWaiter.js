@@ -7,6 +7,7 @@ export function useWaiter(requestCreator, requestParams) {
   const id = useRef(null);
   const params = useRef(null);
   const response = useRef(null);
+  const isCanceled = useRef(false);
 
   const [request, setRequest] = useState(null);
   const [error, setError] = useState(null);
@@ -24,7 +25,9 @@ export function useWaiter(requestCreator, requestParams) {
   const [lastModified, setLastModified] = useState(null);
 
   async function requestRunner(runnerParams) {
+    isCanceled.current = false;
     params.current = runnerParams;
+
     const waiterId = id.current + 1;
     id.current = waiterId;
 
@@ -53,11 +56,19 @@ export function useWaiter(requestCreator, requestParams) {
       if (waiterId !== id.current) {
         return;
       }
+
+      if (isCanceled.current) {
+        return;
+      }
+
       // waiter success changes
       response.current = data;
       setResolved(true);
     } catch (e) {
       if (waiterId !== id.current) {
+        return;
+      }
+      if (isCanceled.current) {
         return;
       }
       // request error changes
@@ -78,12 +89,55 @@ export function useWaiter(requestCreator, requestParams) {
     requestRunner(callbackParams);
   }, []);
 
+  const clearWaiter = useCallback(() => {
+    id.current = id.current + 1;
+    isCanceled.current = false;
+    response.current = null;
+    params.current = null;
+
+    setError(null);
+    setRequest(null);
+
+    setPending(false);
+    setResolved(false);
+    setRejected(false);
+    setCompleted(false);
+    setRefreshing(false);
+
+    setStartTime(null);
+    setEndTime(null);
+    setLastModified(getTime());
+  }, []);
+
+  const cancelWaiter = useCallback(() => {
+    if (isCompleted) {
+      return;
+    }
+    isCanceled.current = true;
+    response.current = null;
+
+    setRequest(null);
+    setError(null);
+
+    setPending(false);
+    setResolved(false);
+    setRejected(false);
+    setCompleted(false);
+    setRefreshing(false);
+
+    setStartTime(null);
+    setEndTime(null);
+    setLastModified(getTime());
+  }, [isCompleted]);
+
   useEffect(() => {
     callWaiter(requestParams);
   }, [callWaiter]);
 
   return {
     callWaiter,
+    cancelWaiter,
+    clearWaiter,
     params: params.current,
 
     id: id.current,
@@ -96,6 +150,7 @@ export function useWaiter(requestCreator, requestParams) {
     isRejected,
     isCompleted,
     isRefreshing,
+    isCanceled: isCanceled.current,
 
     lastModified,
     startTime,
