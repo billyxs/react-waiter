@@ -34,13 +34,13 @@ export function useWaiter(requestCreator, requestParams) {
     id.current = waiterId;
 
     try {
-      const request = requestCreator();
+      const nextRequest = requestCreator();
       // if we have a response already, we're refreshing
       const refresh = !!response.current;
       setRefreshing(refresh);
 
       // waiter request init
-      setRequest(request);
+      setRequest(nextRequest);
       setError(null);
 
       // waiter lifecycle init
@@ -54,7 +54,7 @@ export function useWaiter(requestCreator, requestParams) {
       setEndTime(null);
       setLastModified(getTime());
 
-      const data = await request;
+      const data = await nextRequest;
       if (waiterId !== id.current) {
         return;
       }
@@ -92,45 +92,45 @@ export function useWaiter(requestCreator, requestParams) {
   }, []);
 
   const clearWaiter = useCallback(() => {
-    id.current = null
-    isCanceled.current =false
-    response.current = null
-    params.current = null
+    id.current = null;
+    isCanceled.current = false;
+    response.current = null;
+    params.current = null;
 
-    setError(null)
-    setRequest(null)
+    setError(null);
+    setRequest(null);
 
-    setPending(false)
-    setResolved(false)
-    setRejected(false)
-    setCompleted(false)
-    setRefreshing(false)
+    setPending(false);
+    setResolved(false);
+    setRejected(false);
+    setCompleted(false);
+    setRefreshing(false);
 
-    setStartTime(null)
-    setEndTime(null)
-    setLastModified(getTime())
+    setStartTime(null);
+    setEndTime(null);
+    setLastModified(getTime());
   }, []);
 
   const cancelWaiter = useCallback(() => {
-    if (isCompleted) {
-      return
+    if (id.current == null || isCompleted) {
+      return;
     }
-    isCanceled.current = true
-    response.current = null
+    isCanceled.current = true;
+    response.current = null;
 
-    setRequest(null)
-    setError(null)
+    setRequest(null);
+    setError(null);
 
-    setPending(false)
-    setResolved(false)
-    setRejected(false)
-    setCompleted(false)
-    setRefreshing(false)
+    setPending(false);
+    setResolved(false);
+    setRejected(false);
+    setCompleted(false);
+    setRefreshing(false);
 
-    setStartTime(null)
-    setEndTime(null)
-    setLastModified(getTime())
-  }, [isCompleted, ]);
+    setStartTime(null);
+    setEndTime(null);
+    setLastModified(getTime());
+  }, [isCompleted]);
 
   useEffect(() => {
     callWaiter(requestParams);
