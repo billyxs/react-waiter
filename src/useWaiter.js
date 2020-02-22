@@ -32,13 +32,13 @@ export function useWaiter(requestCreator, requestParams) {
     id.current = waiterId;
 
     try {
-      const request = requestCreator();
+      const nextRequest = requestCreator();
       // if we have a response already, we're refreshing
       const refresh = !!response.current;
       setRefreshing(refresh);
 
       // waiter request init
-      setRequest(request);
+      setRequest(nextRequest);
       setError(null);
 
       // waiter lifecycle init
@@ -52,7 +52,7 @@ export function useWaiter(requestCreator, requestParams) {
       setEndTime(null);
       setLastModified(getTime());
 
-      const data = await request;
+      const data = await nextRequest;
       if (waiterId !== id.current) {
         return;
       }
