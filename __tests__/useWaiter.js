@@ -32,6 +32,7 @@ describe('useWaiter', () => {
     expect(result.current.isRejected).toBe(false);
     expect(result.current.isCompleted).toBe(false);
     expect(result.current.isRefreshing).toBe(false);
+    expect(result.current.isCanceled).toBe(false);
 
     expect(result.current.lastModified).toBeGreaterThan(0);
     expect(result.current.startTime).toBeGreaterThan(0);
@@ -51,6 +52,7 @@ describe('useWaiter', () => {
     expect(result.current.isRejected).toBe(false);
     expect(result.current.isCompleted).toBe(true);
     expect(result.current.isRefreshing).toBe(false);
+    expect(result.current.isCanceled).toBe(false);
 
     expect(result.current.lastModified).toBeGreaterThan(0);
     expect(result.current.startTime).toBeGreaterThan(0);
@@ -89,6 +91,7 @@ describe('useWaiter', () => {
     expect(result.current.isRejected).toBe(false);
     expect(result.current.isCompleted).toBe(false);
     expect(result.current.isRefreshing).toBe(true);
+    expect(result.current.isCanceled).toBe(false);
 
     expect(result.current.lastModified).toBeGreaterThan(0);
     expect(result.current.startTime).toBeGreaterThan(0);
@@ -107,6 +110,7 @@ describe('useWaiter', () => {
     expect(result.current.isRejected).toBe(false);
     expect(result.current.isCompleted).toBe(true);
     expect(result.current.isRefreshing).toBe(false);
+    expect(result.current.isCanceled).toBe(false);
 
     expect(result.current.lastModified).toBeGreaterThan(0);
     expect(result.current.startTime).toBeGreaterThan(0);
@@ -129,6 +133,7 @@ describe('useWaiter', () => {
     expect(result.current.isRejected).toBe(false);
     expect(result.current.isCompleted).toBe(false);
     expect(result.current.isRefreshing).toBe(false);
+    expect(result.current.isCanceled).toBe(false);
 
     expect(result.current.lastModified).toBeGreaterThan(0);
     expect(result.current.startTime).toBeGreaterThan(0);
@@ -147,6 +152,7 @@ describe('useWaiter', () => {
     expect(result.current.isRejected).toBe(true);
     expect(result.current.isCompleted).toBe(true);
     expect(result.current.isRefreshing).toBe(false);
+    expect(result.current.isCanceled).toBe(false);
 
     expect(result.current.lastModified).toBeGreaterThan(0);
     expect(result.current.startTime).toBeGreaterThan(0);
@@ -167,11 +173,11 @@ describe('useWaiter', () => {
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(null);
 
-    expect(result.current.isCanceled).toBe(true);
     expect(result.current.isResolved).toBe(false);
     expect(result.current.isRejected).toBe(false);
     expect(result.current.isCompleted).toBe(false);
     expect(result.current.isRefreshing).toBe(false);
+    expect(result.current.isCanceled).toBe(true);
 
     expect(result.current.lastModified).toBeGreaterThan(0);
     expect(result.current.startTime).toBe(null);
