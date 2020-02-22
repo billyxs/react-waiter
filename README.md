@@ -72,6 +72,9 @@ isCompleted: false,
 // true if the request completed previously and is being called again
 isRefreshing: false,
 
+// true if the request is canceled from calling cancelWaiter  
+isCanceled: false,
+
 // unix timestamp in milliseconds when the request is initialzed
 startTime: null,
 
@@ -89,6 +92,10 @@ lastModified: null,
 
 ```javascript
 const {
+  callWaiter,
+  cancelWaiter,
+  clearWaiter,
+
   // waiter data
   id,
   request,
@@ -102,6 +109,7 @@ const {
   isRejected,
   isCompleted,
   isRefreshing,
+  isCanceled,
 
   // timestamps
   startTime,
@@ -109,4 +117,40 @@ const {
   elapsedTime,
   lastModified,
 } = useWaiter(requestCreator);
+```
+
+## callWaiter(params)
+
+This will invoke your requestCreator with any new params. If your request previously succeeded before
+calling callWaiter(), calling it a second time will set `isRefreshing` to be true.
+
+```javascript
+const { callWaiter } = useWaiter(() => myRequest()) 
+
+callWaiter({ param: 'Hello' })
+```
+
+## cancelWaiter()
+
+If your request is current pending, you can cancel the request with `cancelWaiter()`. If the request
+is interrupted, `isCanceled` will be true. If the request completed, `cancelWaiter()` will have no effect.
+
+```javascript
+const { cancelWaiter, isCanceled } = useWaiter(() => myRequest()) 
+
+cancelWaiter()
+```
+
+## clearWaiter()
+
+This will clear all hook properties to look as if the requestCreator had never been invoked.
+The `requestCreator` will stay intact and may be called again by `callWaiter()`. 
+
+If a request is currently running, the request will not complete and any result will be ignored.
+
+
+```javascript
+const { clearWaiter } = useWaiter(() => myRequest()) 
+
+clearWaiter()
 ```
