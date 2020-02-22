@@ -1,8 +1,13 @@
 import React from 'react';
 import styled from 'styled-components'
 import ReactMarkdown from 'react-markdown';
+
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { monokai } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+
 import { useWaiter } from './useWaiter'
 import { Header } from './components/Header';
+
 
 const Button = styled.button`
   cursor: pointer;
@@ -98,11 +103,103 @@ function TestWaiter() {
     <div style={{
       margin: '20px auto',
       width: '900px',
-      padding: '20px',
     }}>
       <Header />
       <br />
-      <h2>useWaiter()</h2>
+
+      <h2>Example</h2>
+      <div style={{
+        width: '40%',
+        display: 'inline-block',
+        padding: '15px 30px 15px 0px',
+        verticalAlign: 'top',
+      }}>
+
+        <Button onClick={() => callWaiter({ prevWaiterId: id })} >
+          Call Waiter with params
+        </Button>
+        <br />
+        <br />
+        <Button onClick={() => cancelWaiter()}>
+          Cancel Waiter
+        </Button>
+        <br />
+        <br />
+        <Button onClick={() => clearWaiter()}>
+          Clear Waiter
+        </Button>
+        <br />
+        <br />
+        <h3>Button code</h3>
+        <SyntaxHighlighter language="javascript" style={monokai}>
+{`<Button onClick={() =>
+  callWaiter({
+      prevWaiterId: id
+  })}
+  >
+  Call Waiter with params
+</Button>
+
+<Button onClick={cancelWaiter}>
+  Cancel Waiter
+</Button>
+
+<Button onClick={clearWaiter}>
+  Clear Waiter
+</Button>
+`}
+        </SyntaxHighlighter>
+      </div>
+      <div style={{
+        width: '55%',
+        display: 'inline-block',
+
+      }}>
+
+        <WaiterDiv
+          isPending={isPending}
+          isResolved={isResolved}
+          isRejected={isRejected}
+          isCanceled={isCanceled}
+        >
+        { isPending && '...working' }
+        { isResolved && 'Yes, success!' }
+        { isRejected && 'Oh no, error' }
+        { isCanceled && 'Hey, I got canceled!' }
+        <br />
+        <br />
+        params: { JSON.stringify(params) }
+        <br />
+        <br />
+        { isResolved && <span>response: {JSON.stringify(response)}</span> }
+        { isRejected && <span>error: {JSON.stringify(error)}</span> }
+
+        </WaiterDiv>
+        <div style={{
+          padding: '15px',
+          border: 'solid 1px #ddd',
+        }}>
+          <div>id: {JSON.stringify(id)}</div>
+          <div>params: {JSON.stringify(params)}</div>
+          <br />
+          <div>response: {JSON.stringify(response)}</div>
+          <div>error: {JSON.stringify(error)}</div>
+          <br />
+          <div>isPending: {isPending.toString()}</div>
+          <div>isResolved: {isResolved.toString()}</div>
+          <div>isRejected: {isRejected.toString()}</div>
+          <div>isCompleted: {isCompleted.toString()}</div>
+          <div>isRefreshing: {isRefreshing.toString()}</div>
+          <div>isCanceled: {isCanceled.toString()}</div>
+          <br />
+          <div>startTime: {startTime}</div>
+          <div>endTime: {endTime}</div>
+          <div>elapsedTime: {elapsedTime}</div>
+          <div>lastModified: {lastModified}</div>
+        </div>
+      </div>
+      <div>
+            <h2>useWaiter()</h2>
       <div>
    <ReactMarkdown
     source={`
@@ -138,77 +235,6 @@ function TestWaiter() {
     />
       </div>
 
-      <h2>Run example</h2>
-      <div style={{
-        width: '35%',
-        display: 'inline-block',
-        padding: '15px',
-        verticalAlign: 'top',
-      }}>
-
-        Button onClick with initiate callWaiter({JSON.stringify({preWaiterId: id})})
-        <br />
-        <br />
-        <Button onClick={() => callWaiter({ prevWaiterId: id })} >
-          Run with new params
-        </Button>
-        <br />
-        <br />
-        <Button onClick={() => cancelWaiter()}>
-          Cancel Waiter
-        </Button>
-        <br />
-        <br />
-        <Button onClick={() => clearWaiter()}>
-          Clear Waiter
-        </Button>
-        <br />
-        <br />
-
-        <WaiterDiv
-          isPending={isPending}
-          isResolved={isResolved}
-          isRejected={isRejected}
-          isCanceled={isCanceled}
-        >
-        { isPending && '...working' }
-        { isResolved && 'Yes, success!' }
-        { isRejected && 'Oh no, error' }
-        { isCanceled && 'Hey, I got canceled!' }
-        <br />
-        <br />
-        params: { JSON.stringify(params) }
-        <br />
-        <br />
-        { isResolved && <span>response: {JSON.stringify(response)}</span> }
-        { isRejected && <span>error: {JSON.stringify(error)}</span> }
-
-        </WaiterDiv>
-      </div>
-      <div style={{
-        width: '55%',
-        display: 'inline-block',
-        padding: '15px',
-        border: 'solid 1px #ddd',
-
-      }}>
-        <div>id: {JSON.stringify(id)}</div>
-        <div>params: {JSON.stringify(params)}</div>
-        <br />
-        <div>response: {JSON.stringify(response)}</div>
-        <div>error: {JSON.stringify(error)}</div>
-        <br />
-        <div>isPending: {isPending.toString()}</div>
-        <div>isResolved: {isResolved.toString()}</div>
-        <div>isRejected: {isRejected.toString()}</div>
-        <div>isCompleted: {isCompleted.toString()}</div>
-        <div>isRefreshing: {isRefreshing.toString()}</div>
-        <div>isCanceled: {isCanceled.toString()}</div>
-        <br />
-        <div>startTime: {startTime}</div>
-        <div>endTime: {endTime}</div>
-        <div>elapsedTime: {elapsedTime}</div>
-        <div>lastModified: {lastModified}</div>
       </div>
     </div>
   )

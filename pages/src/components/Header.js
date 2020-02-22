@@ -7,7 +7,14 @@ export function Header() {
         react-waiter
         &nbsp;
         &nbsp;
-        &nbsp;
+
+        <a className='github-button'
+          href='https://github.com/billyxs/react-waiter'
+          data-size='large'
+          aria-label='Star hixme/hixme-ui on GitHub'
+          >
+           Github
+        </a>
       </h1>
       <div>Managing the promise lifecyle for you react applications.
         <br />
@@ -21,7 +28,7 @@ export function Header() {
         </a>
         {' '}
         <a href="https://img.shields.io/npm/l/react-waiter?color=blue">
-          <img alt="NPM" src="https://img.shields.io/npm/l/react-waiter?color=blue&amp;label=License" />
+          <img alt="NPM" src="https://img.shields.io/npm/l/react-waiter?color=blue&amp;label=license" />
         </a>
       </div>
       <br />
