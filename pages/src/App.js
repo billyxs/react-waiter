@@ -16,7 +16,10 @@ const Button = styled.button`
 const WaiterDiv = styled.div`
   padding: 20px;
   margin-bottom: 10px;
-  color: ${({ isPending, isResolved, isRejected }) => {
+  color: ${({ isPending, isResolved, isRejected, isCanceled }) => {
+      if (isCanceled) {
+        return '#666';
+      }
       if (isPending) {
         return 'orange';
       }
@@ -29,7 +32,10 @@ const WaiterDiv = styled.div`
       return 'black';
     }};
   border: 1px solid #ccc;
-  border-color: ${({ isPending, isResolved, isRejected }) => {
+  border-color: ${({ isPending, isResolved, isRejected, isCanceled }) => {
+      if (isCanceled) {
+        return '#666';
+      }
       if (isPending) {
         return 'orange';
       }
@@ -68,6 +74,9 @@ function TestWaiter() {
     params,
 
     callWaiter,
+    cancelWaiter,
+    clearWaiter,
+
     response,
     error,
 
@@ -76,6 +85,7 @@ function TestWaiter() {
     isRejected,
     isCompleted,
     isRefreshing,
+    isCanceled,
 
     startTime,
     endTime,
@@ -109,6 +119,8 @@ function TestWaiter() {
         params,
 
         callWaiter,
+        cancelWaiter,
+        clearWaiter,
         response,
         error,
 
@@ -117,6 +129,7 @@ function TestWaiter() {
         isRejected,
         isCompleted,
         isRefreshing,
+        isCanceled,
 
         startTime,
         endTime,
@@ -142,15 +155,27 @@ function TestWaiter() {
         </Button>
         <br />
         <br />
+        <Button onClick={() => cancelWaiter()}>
+          Cancel Waiter
+        </Button>
+        <br />
+        <br />
+        <Button onClick={() => clearWaiter()}>
+          Clear Waiter
+        </Button>
+        <br />
+        <br />
 
         <WaiterDiv
           isPending={isPending}
           isResolved={isResolved}
           isRejected={isRejected}
+          isCanceled={isCanceled}
         >
         { isPending && '...working' }
         { isResolved && 'Yes, success!' }
         { isRejected && 'Oh no, error' }
+        { isCanceled && 'Hey, I got canceled!' }
         <br />
         <br />
         params: { JSON.stringify(params) }
@@ -179,6 +204,7 @@ function TestWaiter() {
         <div>isRejected: {isRejected.toString()}</div>
         <div>isCompleted: {isCompleted.toString()}</div>
         <div>isRefreshing: {isRefreshing.toString()}</div>
+        <div>isCanceled: {isCanceled.toString()}</div>
         <br />
         <div>startTime: {startTime}</div>
         <div>endTime: {endTime}</div>
