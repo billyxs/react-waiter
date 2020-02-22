@@ -96,5 +96,8 @@
       "<rootDir>/pages"
     ]
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "react-syntax-highlighter": "^12.2.1"
+  }
 }
