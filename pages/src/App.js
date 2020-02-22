@@ -201,7 +201,8 @@ function TestWaiter() {
         </div>
       </div>
       <div>
-            <h2>useWaiter()</h2>
+
+      <h2>useWaiter()</h2>
       <div>
         <SyntaxHighlighter language="javascript" style={monokai}>
 {`
@@ -257,8 +258,8 @@ function TestWaiter() {
     )
   }
   `}
-  </SyntaxHighlighter>
-      </div>
+          </SyntaxHighlighter>
+        </div>
 
       </div>
     </div>
