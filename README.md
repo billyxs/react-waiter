@@ -2,11 +2,13 @@
 
 [![NPM](https://img.shields.io/npm/v/react-waiter)](https://npmjs.org/package/react-waiter)
 [![Build Status](https://travis-ci.org/billyxs/react-waiter.svg?branch=master)](https://travis-ci.org/billyxs/react-waiter)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![license: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Installation
 
 `npm i react-waiter --save`
+
+See it in action [https://billyxs.github.io/react-waiter/](https://billyxs.github.io/react-waiter/)
 
 ## Basic Usage
 
@@ -35,11 +37,44 @@ function Component() {
 }
 ```
 
-## useWaiter(requestCreator)
+# useWaiter(requestCreator, requestParams)
 
-A react hook for handling your async requests.
+`useWaiter()`  is a react hook for handling your async requests. 
+Provide a function(requestCreator) for `react-waiter` to call and you're set.
 
-### defaults
+```javascript
+function requestCreator() {
+  return getItems()
+}
+
+const waiter = useWaiter(requestCreator)
+
+```
+
+If you need to provide dynamic parameters to your request, this can be handled
+with the requestParams, the second `useWaiter()` argument.
+
+Say we have an API to request an item by ID, called `getItemById()`.
+
+```javascript
+function requestCreator({ id }) {
+  return getItemById(id)
+}
+
+const { callWaiter} = useWaiter(requestCreator, { id: 1 })
+
+// When you are done with item 1, get item 2 using callWaiter()
+callWaiter({ id: 2 })
+
+<button onClick={() => {
+  callWaiter({ id: 2})
+}}>
+  Get next item
+</button>
+
+```
+
+## default values
 
 ```
 // The request ID of the waiter. This will increment with each call.
@@ -88,7 +123,7 @@ elapsedTime: null,
 lastModified: null,
 ```
 
-### Hook properties
+## Hook properties
 
 ```javascript
 const {
@@ -132,8 +167,12 @@ callWaiter({ param: 'Hello' })
 
 ## cancelWaiter()
 
-If your request is current pending, you can cancel the request with `cancelWaiter()`. If the request
-is interrupted, `isCanceled` will be true. If the request completed, `cancelWaiter()` will have no effect.
+If your request is currently pending, you may cancel the current request with `cancelWaiter()`. This simply ignores
+the request when it resolves or rejects. 
+
+If the request is interrupted, `isCanceled` will be true. 
+
+If the request completed, `cancelWaiter()` will have no effect.
 
 ```javascript
 const { cancelWaiter, isCanceled } = useWaiter(() => myRequest()) 
