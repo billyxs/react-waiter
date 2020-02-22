@@ -8,6 +8,8 @@
 
 `npm i react-waiter --save`
 
+See it in action [https://billyxs.github.io/react-waiter/](https://billyxs.github.io/react-waiter/)
+
 ## Basic Usage
 
 ```javascript
