@@ -115,12 +115,13 @@ function TestWaiter() {
       const myWaiter = usewaiter( myrequest, { param1: "hello" })
 
       const {
-        id,
-        params,
-
         callWaiter,
         cancelWaiter,
         clearWaiter,
+
+        id,
+        params,
+        request,
         response,
         error,
 
