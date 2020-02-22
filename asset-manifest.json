@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/react-waiter/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/react-waiter/static/js/main.aa751537.chunk.js",
-    "main.js.map": "/react-waiter/static/js/main.aa751537.chunk.js.map",
+    "main.js": "/react-waiter/static/js/main.ce54dd70.chunk.js",
+    "main.js.map": "/react-waiter/static/js/main.ce54dd70.chunk.js.map",
     "runtime-main.js": "/react-waiter/static/js/runtime-main.c829a1a7.js",
     "runtime-main.js.map": "/react-waiter/static/js/runtime-main.c829a1a7.js.map",
     "static/js/2.7eec7e61.chunk.js": "/react-waiter/static/js/2.7eec7e61.chunk.js",
     "static/js/2.7eec7e61.chunk.js.map": "/react-waiter/static/js/2.7eec7e61.chunk.js.map",
     "index.html": "/react-waiter/index.html",
-    "precache-manifest.0b995c341a45a743ef801dd410925f4c.js": "/react-waiter/precache-manifest.0b995c341a45a743ef801dd410925f4c.js",
+    "precache-manifest.ebc05717bab7ebae17b1cd7b0739f3fd.js": "/react-waiter/precache-manifest.ebc05717bab7ebae17b1cd7b0739f3fd.js",
     "service-worker.js": "/react-waiter/service-worker.js",
     "static/css/main.5ecd60fb.chunk.css.map": "/react-waiter/static/css/main.5ecd60fb.chunk.css.map",
     "static/js/2.7eec7e61.chunk.js.LICENSE.txt": "/react-waiter/static/js/2.7eec7e61.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.c829a1a7.js",
     "static/js/2.7eec7e61.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.aa751537.chunk.js"
+    "static/js/main.ce54dd70.chunk.js"
   ]
 }
