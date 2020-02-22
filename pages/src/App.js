@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components'
 import ReactMarkdown from 'react-markdown';
 import { useWaiter } from './useWaiter'
+import { Header } from './components/Header';
 
 const Button = styled.button`
   cursor: pointer;
@@ -99,10 +100,7 @@ function TestWaiter() {
       width: '900px',
       padding: '20px',
     }}>
-      <h1>react-waiter</h1>
-      <div>Managing the promise lifecyle for you react applications.</div>
-      <br />
-      <hr />
+      <Header />
       <br />
       <h2>useWaiter()</h2>
       <div>
