@@ -110,7 +110,7 @@ export function useWaiter(requestCreator, requestParams) {
   }, []);
 
   const cancelWaiter = useCallback(() => {
-    if (isCompleted) {
+    if (id.current == null || isCompleted) {
       return;
     }
     isCanceled.current = true;
