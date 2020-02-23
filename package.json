@@ -97,7 +97,5 @@
     ]
   },
   "license": "MIT",
-  "dependencies": {
-    "react-syntax-highlighter": "^12.2.1"
-  }
+  "dependencies": {}
 }
