@@ -193,3 +193,27 @@ const { clearWaiter } = useWaiter(() => myRequest())
 
 clearWaiter()
 ```
+
+## Waiter
+
+Render props implementaion of the waiter.
+
+```javascript
+import { Waiter } from 'react-waiter'
+
+<Waiter
+  requestCreator={(params) => Promise.resolve(params)}
+  render={({
+    response,
+    error,
+    isPending,
+    isResolved,
+    isRejected,
+  }) => (
+    <div>
+      {isPending && 'Waiting...'}
+      {isResolved && response}
+      {isRejected && error.message}
+    </div>
+  )}
+```
