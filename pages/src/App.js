@@ -1,105 +1,125 @@
 import React from 'react';
-import styled from 'styled-components'
-import ReactMarkdown from 'react-markdown';
 
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { monokai } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 import { useWaiter } from './useWaiter'
-import { Waiter } from './Waiter'
+import { WaiterExample } from './WaiterExample'
 import { Header } from './components/Header';
+import { Button } from './components/Button';
+import { WaiterDiv } from './components/WaiterDiv';
+import { fakerWaiter } from './utils/faker-waiter'
 
+function RenderWaiter() {
 
-function testRequest() {
-  return new Promise(
-    (resolve, reject) => {
-      setTimeout(() => {
-        const num = Math.floor(Math.random() * 10)
-
-        if (num % 2 === 1) {
-          reject({ message: 'Sorry, rejected'})
-          return
-        }
-
-        resolve({ success: true })
-      }, 5000)
-    }
-  )
-}
-
-function ExampleWaiter() {
   return (
-    <Waiter
-      requestCreator={testRequest}
-      render={({
-        isPending,
-        isResolved,
-        isRejected,
-        isCompleted,
-      }) => (
-        <div>
-          isPending: {JSON.stringify(isPending)}
-          <br />
-          isResolved: {JSON.stringify(isResolved)}
-          <br />
-          isRejected: {JSON.stringify(isRejected)}
-          <br />
-          isCompleted: {JSON.stringify(isCompleted)}
-        </div>
-      )}
-    />
+        <SyntaxHighlighter language="javascript" style={monokai}>
+{`
+  import { Waiter } from 'react-waiter'
 
+  function requestCreator(params) {
+    return getItem(params)
+  }
+
+  function MyComponent() {
+    return (
+      <Waiter
+        requestCreator={requestCreator}
+        render={({
+          callWaiter,
+          cancelWaiter,
+          clearWaiter,
+
+          id,
+          params,
+          request,
+          response,
+          error,
+
+          isPending,
+          isResolved,
+          isRejected,
+          isCompleted,
+          isRefreshing,
+          isCanceled,
+
+          startTime,
+          endTime,
+          elapsedTime,
+          lastModified
+        }) => {
+          <div>
+            <button onClick={cancelWaiter}>Cancel request</button>
+            <button onClick={cancelWaiter}>Clear</button>
+            <button onClick={() => callWaiter({ id: params.id + 1 })}>Get next item</button>
+
+            {isPending && '...loading'}
+            {isResolved && response.item.id}
+            {isRejected && error.message}
+            {isCompleted && 'All done!'}
+            {isRefreshing && '...getting latest'}
+            {isCanceled && 'Sorry, interrupted!'}
+
+            {startTime && 'Started at ' + startTime }
+            {endTime && 'Ended at' + endTime }
+            {elapsedTime && 'That took' + elapsedTime + 'milliseconds' }
+            {lastModified && 'Last change ' + lastModified }
+          </div>
+        }}
+      />
+
+
+    )
+    const myWaiter = usewaiter( requestCreator, { id: 1 })
+
+    const {
+      callWaiter,
+      cancelWaiter,
+      clearWaiter,
+
+      id,
+      params,
+      request,
+      response,
+      error,
+
+      isPending,
+      isResolved,
+      isRejected,
+      isCompleted,
+      isRefreshing,
+      isCanceled,
+
+      startTime,
+      endTime,
+      elapsedTime,
+      lastModified
+    } = myWaiter
+
+    return (
+      <div>
+        <button onClick={cancelWaiter}>Cancel request</button>
+        <button onClick={cancelWaiter}>Clear</button>
+        <button onClick={() => callWaiter({ id: params.id + 1 })}>Get next item</button>
+
+        {isPending && '...loading'}
+        {isResolved && response.item.id}
+        {isRejected && error.message}
+        {isCompleted && 'All done!'}
+        {isRefreshing && '...getting latest'}
+        {isCanceled && 'Sorry, interrupted!'}
+
+        {startTime && 'Started at ' + startTime }
+        {endTime && 'Ended at' + endTime }
+        {elapsedTime && 'That took' + elapsedTime + 'milliseconds' }
+        {lastModified && 'Last change ' + lastModified }
+      </div>
+    )
+  }
+  `}
+    </SyntaxHighlighter>
   )
 }
-
-const Button = styled.button`
-  cursor: pointer;
-  padding: 8px 20px;
-  background: none;
-  font-size: 16px;
-  :hover {
-     background: #efefef;
-  }
-`
-
-const WaiterDiv = styled.div`
-  padding: 20px;
-  margin-bottom: 10px;
-  color: ${({ isPending, isResolved, isRejected, isCanceled }) => {
-      if (isCanceled) {
-        return '#666';
-      }
-      if (isPending) {
-        return 'orange';
-      }
-      if (isResolved) {
-        return 'green';
-      }
-      if (isRejected) {
-        return 'red';
-      }
-      return 'black';
-    }};
-  border: 1px solid #ccc;
-  border-color: ${({ isPending, isResolved, isRejected, isCanceled }) => {
-      if (isCanceled) {
-        return '#666';
-      }
-      if (isPending) {
-        return 'orange';
-      }
-      if (isResolved) {
-        return 'green';
-      }
-      if (isRejected) {
-        return 'red';
-      }
-      return 'black';
-    }};
-  display: block;
-`
-
-
 
 function TestWaiter() {
   const {
@@ -124,7 +144,7 @@ function TestWaiter() {
     endTime,
     elapsedTime,
     lastModified
-  } = useWaiter(testRequest, { param1: 'hello' })
+  } = useWaiter(fakerWaiter, { param1: 'hello' })
 
   return (
     <div style={{
@@ -289,7 +309,13 @@ function TestWaiter() {
         </div>
 
       </div>
-      <ExampleWaiter />
+
+      <br />
+      <br />
+      <hr />
+      <h2>Waiter()</h2>
+      <p>A renderProps style component for handling the waiter implementation.</p>
+      <RenderWaiter />
     </div>
   )
 }
