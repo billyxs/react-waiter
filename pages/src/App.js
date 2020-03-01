@@ -6,8 +6,51 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { monokai } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 import { useWaiter } from './useWaiter'
+import { Waiter } from './Waiter'
 import { Header } from './components/Header';
 
+
+function testRequest() {
+  return new Promise(
+    (resolve, reject) => {
+      setTimeout(() => {
+        const num = Math.floor(Math.random() * 10)
+
+        if (num % 2 === 1) {
+          reject({ message: 'Sorry, rejected'})
+          return
+        }
+
+        resolve({ success: true })
+      }, 5000)
+    }
+  )
+}
+
+function ExampleWaiter() {
+  return (
+    <Waiter
+      requestCreator={testRequest}
+      render={({
+        isPending,
+        isResolved,
+        isRejected,
+        isCompleted,
+      }) => (
+        <div>
+          isPending: {JSON.stringify(isPending)}
+          <br />
+          isResolved: {JSON.stringify(isResolved)}
+          <br />
+          isRejected: {JSON.stringify(isRejected)}
+          <br />
+          isCompleted: {JSON.stringify(isCompleted)}
+        </div>
+      )}
+    />
+
+  )
+}
 
 const Button = styled.button`
   cursor: pointer;
@@ -56,22 +99,6 @@ const WaiterDiv = styled.div`
   display: block;
 `
 
-function testRequest() {
-  return new Promise(
-    (resolve, reject) => {
-      setTimeout(() => {
-        const num = Math.floor(Math.random() * 10)
-
-        if (num % 2 === 1) {
-          reject({ message: 'Sorry, rejected'})
-          return
-        }
-
-        resolve({ success: true })
-      }, 5000)
-    }
-  )
-}
 
 
 function TestWaiter() {
@@ -262,6 +289,7 @@ function TestWaiter() {
         </div>
 
       </div>
+      <ExampleWaiter />
     </div>
   )
 }
